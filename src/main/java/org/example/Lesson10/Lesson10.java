@@ -21,5 +21,8 @@ public class Lesson10 {
         productsArray[4] = new Product("телефон", "18.12.2023",
                 "Apple", "Taiwan", 124958, false);
 
+        Park.AttractionInfo  attract1 = new Park("Американские горки") .new AttractionInfo("с 10 утра до 21 вечера", 200);
+        attract1.attractionInformation();
+
     }
 }
