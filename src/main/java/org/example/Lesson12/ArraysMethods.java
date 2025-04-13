@@ -3,8 +3,13 @@ package org.example.Lesson12;
 public class ArraysMethods {
 
     public int checkSizeAndSummArray(String[][] array) throws MyArraySizeException, MyArrayDataException {
-        if (array.length != 4 || array[0].length != 4) {
+        if (array.length != 4) {
             throw new MyArraySizeException("Массив должен быть размером 4x4");
+        }
+        for (String[] row : array) {
+            if (row.length != 4) {
+                throw new MyArraySizeException("Все строки массива должны содержать 4 элемента");
+            }
         }
 
         int sum = 0;
