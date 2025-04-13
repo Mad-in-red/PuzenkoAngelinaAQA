@@ -1,4 +1,4 @@
-package org.example.Lesson14JUnut5;
+package org.example.Lesson14;
 
 import java.util.Scanner;
 
