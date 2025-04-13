@@ -1,6 +1,6 @@
 package TestsTestng;
 
-import org.example.Lesson14.SOfTriangle;
+import org.example.Lesson14_1.SOfTriangle;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

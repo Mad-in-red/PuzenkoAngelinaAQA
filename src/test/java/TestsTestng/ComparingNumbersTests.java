@@ -1,6 +1,7 @@
 package TestsTestng;
 
-import org.example.Lesson14.ComparingNumbers;
+
+import org.example.Lesson14_1.ComparingNumbers;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
