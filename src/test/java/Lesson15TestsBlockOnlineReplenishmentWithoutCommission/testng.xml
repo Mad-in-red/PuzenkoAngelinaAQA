@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="MTS Tests Suite">
+    <test name="MTS Website Tests">
+        <classes>
+            <class name="Lesson15TestsBlockOnlineReplenishmentWithoutCommission.TitleTest"/>
+        </classes>
+    </test>
+</suite>
