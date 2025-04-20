@@ -1,131 +1,63 @@
 package TestsJUnit5;
 
-import org.example.Lesson14JUnut5.Calculator;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.example.Lesson14_JUnit.MathCalculations;
 import org.junit.jupiter.api.Test;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CalculatorTests {
-    private final PrintStream originalOut = System.out;
-    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-
-    @BeforeEach
-    void setUp() {
-        System.setOut(new PrintStream(outContent));
-    }
-
-    @AfterEach
-    void tearDown() {
-        System.setOut(originalOut);
-    }
 
     @Test
-    void testInvalidNumbersInput() {
-        String input = "abc\n10\n*?%#\n5\n+\n";
-        provideInput(input);
-
-        Calculator.main(new String[]{});
-
-        String output = outContent.toString().replace("\r", "");
-        assertTrue(output.contains("Ошибка: введите число!"));
-        assertTrue(output.contains("10,00 + 5,00 = 15,00"));
-    }
-
-    @Test
-    void testInvalidOperationInput() {
-        String input = "10\n5\nghjgkh\n+\n";
-        provideInput(input);
-
-        Calculator.main(new String[]{});
-
-        String output = outContent.toString().replace("\r", "");
-        assertTrue(output.contains("Ошибка: допустимые операции +, -, *, /"));
-        assertTrue(output.contains("10,00 + 5,00 = 15,00"));
-    }
-
-    @Test
-    void testSummation() {//переделать на сложение
-        String input = "5,2\n5\n+\n";
-        provideInput(input);
-
-        Calculator.main(new String[]{});
-
-        String output = outContent.toString().trim().replace("\r", "");
-        assertTrue(output.contains("5,20 + 5,00 = 10,20"));
+    void testSummation() {
+        double result = MathCalculations.doOperation(5.2, 5, "+");
+        assertEquals(10.2, result, 0.001, "Некорректный результат сложения");
     }
 
     @Test
     void testSubtraction() {
-        String input = "10,8\n5,3\n-\n";
-        provideInput(input);
-
-        Calculator.main(new String[]{});
-
-        String output = outContent.toString().trim().replace("\r", "");
-        assertTrue(output.contains("10,80 - 5,30 = 5,50"));
+        double result = MathCalculations.doOperation(10.8, 5.3, "-");
+        assertEquals(5.5, result, 0.001, "Некорректный результат вычитания");
     }
 
     @Test
     void testMultiplication() {
-        String input = "9\n-3\n*\n";
-        provideInput(input);
-
-        Calculator.main(new String[]{});
-
-        String output = outContent.toString().trim().replace("\r", "");
-        assertTrue(output.contains("9,00 * -3,00 = -27,00"));
+        double result = MathCalculations.doOperation(9, -3, "*");
+        assertEquals(-27.0, result, 0.001, "Некорректный результат умножения");
     }
 
     @Test
     void testDivision() {
-        String input = "9\n3\n/\n";
-        provideInput(input);
-
-        Calculator.main(new String[]{});
-
-        String output = outContent.toString().trim().replace("\r", "");
-        assertTrue(output.contains("9,00 / 3,00 = 3,00"));
+        double result = MathCalculations.doOperation(9, 3, "/");
+        assertEquals(3.0, result, 0.001, "Некорректный результат деления");
     }
 
     @Test
     void testDivisionByZero() {
-        String input = "9\n0\n/\n";
-        provideInput(input);
+        ArithmeticException exception = assertThrows(ArithmeticException.class,
+                () -> MathCalculations.doOperation(9, 0, "/"),
+                "Ожидалось исключение при делении на ноль");
 
-        Calculator.main(new String[]{});
-
-        String output = outContent.toString().trim().replace("\r", "");
-        assertTrue(output.contains("На 0 делить нельзя!"));
+        assertEquals("На 0 делить нельзя!", exception.getMessage());
     }
 
     @Test
-    void testBigNumbers() {
-        String input = "1,0E308\n1,0E308\n*\n";
-        provideInput(input);
+    void testInvalidOperation() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> MathCalculations.doOperation(5, 5, "%"),
+                "Ожидалось исключение при неверной операции");
 
-        Calculator.main(new String[]{});
-
-        String output = outContent.toString().trim().replace("\r", "");
-        assertTrue(output.contains("Infinity"), "Должно обрабатывать очень большие числа");
+        assertEquals("Неизвестная операция: %", exception.getMessage());
     }
 
     @Test
-    void testInfinityInput() {
-        String input = "Infinity\n5\n/\n";
-        provideInput(input);
-
-        Calculator.main(new String[]{});
-
-        String output = outContent.toString().trim().replace("\r", "");
-        assertTrue(output.contains("Infinity"), "Должно обрабатывать Infinity");
+    void testBigNumbersMultiplication() {
+        double result = MathCalculations.doOperation(1.0E308, 2, "*");
+        assertEquals(Double.POSITIVE_INFINITY, result, "Ожидался результат Infinity");
     }
 
-    private void provideInput(String data) {
-        ByteArrayInputStream testIn = new ByteArrayInputStream(data.getBytes());
-        System.setIn(testIn);
+    @Test
+    void testInfinityDivision() {
+        double result = MathCalculations.doOperation(Double.POSITIVE_INFINITY, 5, "/");
+        assertEquals(Double.POSITIVE_INFINITY, result, "Ожидался результат Infinity");
     }
+
 }
