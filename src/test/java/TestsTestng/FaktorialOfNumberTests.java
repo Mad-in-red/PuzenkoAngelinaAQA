@@ -1,90 +1,45 @@
 package TestsTestng;
 
-import org.example.Lesson14.FactorialOfNumber;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import org.example.Lesson14_Testng.MathCalculations;
 import org.testng.annotations.Test;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 public class FaktorialOfNumberTests {
-    private final PrintStream originalOut = System.out;
-    private ByteArrayOutputStream outContent;
-    private  final PrintStream originalErr = System.err;
-
-    @BeforeMethod
-    public void setUp() {
-        outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-        System.setErr(new PrintStream(outContent));
-    }
-
-    @AfterMethod
-    public void tearDown() {
-        System.setOut(originalOut);
-        System.setErr(originalErr);
-    }
-
-    @Test
-    public void testInvalidNumbersInput() {
-        String input = "abc\n-10\n5,5\n5\n";
-        provideInput(input);
-        FactorialOfNumber.main(new String[]{});
-        String output = outContent.toString().replace("\r", "");
-        assertTrue(output.contains("Ошибка: введите положительное число <= 20!"),
-                "Выводится сообщение об ошибке");
-        assertTrue(output.contains("Факториал 5 = 120"),
-                "Выводится факториал числа");
-    }
-
-    @Test
-    public void testCalcFactorial() {
-        String input = "6";
-        provideInput(input);
-        FactorialOfNumber.main(new String[]{});
-        String output = outContent.toString().replace("\r", "");
-        assertTrue(output.contains("Факториал 6 = 720"),
-                "Выводится факториал числа");
-    }
-
-    @Test
-    void testMaxFactorialForLong() {
-        String input = "21\n20\n";
-        provideInput(input);
-        FactorialOfNumber.main(new String[]{});
-        String output = outContent.toString().replace("\r", "");
-        assertTrue(output.contains("Ошибка: введите положительное число <= 20!"),
-                "Выводится сообщение об ошибке");
-        assertTrue(output.contains("Факториал 20 = 2432902008176640000"),
-                "Выводится факториал числа");
-    }
 
     @Test
     public void testFactorialOfZero() {
-        String input = "0\n1\n";
-        provideInput(input);
-        FactorialOfNumber.main(new String[]{});
-        String output = outContent.toString().replace("\r", "");
-        assertTrue(output.contains("Ошибка: введите положительное число <= 20!"),
-                "Выводится сообщение об ошибке");
-        assertTrue(output.contains("Факториал 1 = 1"),
-                "Выводится факториал числа");
+        long result = MathCalculations.factorial(0);
+        assertEquals(result, 1L, "Факториал 0 должен быть равен 1");
     }
 
     @Test
     public void testFactorialOfOne() {
-        String input = "1";
-        provideInput(input);
-        FactorialOfNumber.main(new String[]{});
-        String output = outContent.toString().replace("\r", "");
-        assertTrue(output.contains("Факториал 1 = 1"),
-                "Выводится факториал числа");
+        long result = MathCalculations.factorial(1);
+        assertEquals(result, 1L, "Факториал 1 должен быть равен 1");
     }
 
-    private void provideInput(String data) {
-        ByteArrayInputStream testIn = new ByteArrayInputStream(data.getBytes());
-        System.setIn(testIn);
+    @Test
+    public void testFactorialOfSix() {
+        long result = MathCalculations.factorial(6);
+        assertEquals(result, 720L, "Факториал 6 должен быть равен 720");
     }
+
+    @Test
+    public void testFactorialOfTwenty() {
+        long result = MathCalculations.factorial(20);
+        assertEquals(result, 2432902008176640000L,
+                "Факториал 20 должен быть равен 2432902008176640000");
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class,
+            expectedExceptionsMessageRegExp = "Факториал определен только для n >= 0")
+    public void testNegativeNumber() {
+        MathCalculations.factorial(-1);
+    }
+
+    @Test(expectedExceptions = ArithmeticException.class)
+    public void testFactorialOverflow() {
+        MathCalculations.factorial(21);
+    }
+
 }
