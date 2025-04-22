@@ -1,7 +1,7 @@
 package Lesson15;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.example.Lesson15.PaySystemLogo;
+import org.example.Lesson15.PaySystemLogos;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -74,9 +74,9 @@ public class OnlineReplenishmentModuleTests {
     }
 
     private void verifyPaymentSystemLogos() {
-        List<PaySystemLogo> logos = PaySystemLogo.getPaymentSystemLogosToVerify();
+        List<PaySystemLogos> logos = PaySystemLogos.getPaymentSystemLogosToVerify();
 
-        for (PaySystemLogo logo : logos) {
+        for (PaySystemLogos logo : logos) {
             WebElement logoElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(logo.xpath)));
             Assert.assertTrue(logoElement.isDisplayed(), "Логотип " + logo.name + " не отображается");
         }
