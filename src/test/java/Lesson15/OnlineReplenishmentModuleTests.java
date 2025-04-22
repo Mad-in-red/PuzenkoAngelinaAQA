@@ -1,7 +1,7 @@
 package Lesson15;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.example.Lesson15.PaySystemLogos;
+import org.example.Lesson15.PaySystemLogo;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -74,9 +74,9 @@ public class OnlineReplenishmentModuleTests {
     }
 
     private void verifyPaymentSystemLogos() {
-        List<PaySystemLogos> logos = PaySystemLogos.getPaymentSystemLogosToVerify();
+        List<PaySystemLogo> logos = PaySystemLogo.getPaymentSystemLogosToVerify();
 
-        for (PaySystemLogos logo : logos) {
+        for (PaySystemLogo logo : logos) {
             WebElement logoElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(logo.xpath)));
             Assert.assertTrue(logoElement.isDisplayed(), "Логотип " + logo.name + " не отображается");
         }
@@ -124,19 +124,15 @@ public class OnlineReplenishmentModuleTests {
 
         String testName = "Проверка кнопки 'Продолжить'";
 
-        // Заполняем данные
         fillPhoneNumber("297777777");
-        fillAmount("77"); // Используем сумму 77 как в рабочем тесте
+        fillAmount("77");
 
-        // Нажимаем кнопку
         clickContinueButton();
 
-        // Ожидаем появления iframe
         WebElement paymentFrame = wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         By.cssSelector("iframe.bepaid-iframe")));
 
-        // Проверяем src iframe
         String frameSrc = paymentFrame.getAttribute("src");
         Assert.assertTrue(frameSrc.contains("checkout.bepaid.by"),
                 "Неверный URL платежной формы: " + frameSrc);
