@@ -5,6 +5,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class HomePageMts extends OpenPage {
 
@@ -19,6 +22,9 @@ public class HomePageMts extends OpenPage {
 
     @FindBy(id = "connection-sum")
     private WebElement sumField;
+
+    @FindBy(id = "connection-email")
+    private WebElement emailField;
 
     @FindBy(xpath = "//*[@id='pay-connection']/button")
     private WebElement continueButton;
@@ -45,7 +51,8 @@ public class HomePageMts extends OpenPage {
     }
 
     public void clickContinueButton() {
-        continueButton.click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(continueButton)).click();
     }
 
     public boolean waitForPaymentFrame() {
@@ -74,4 +81,6 @@ public class HomePageMts extends OpenPage {
     public boolean isPaymentFrameLoaded() {
         return paymentFrame.getAttribute("src").contains("checkout.bepaid.by");
     }
+
+
 }
