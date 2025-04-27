@@ -14,7 +14,7 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 import java.util.List;
 
-public class OnlineReplenishmentModuleTests {
+public class OnlineReplenishmentTests {
     private WebDriver driver;
     private WebDriverWait wait;
 
