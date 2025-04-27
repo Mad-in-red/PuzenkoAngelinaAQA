@@ -1,4 +1,4 @@
-package org.example.Lesson16;
+package Lesson18;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -13,6 +13,25 @@ import java.util.Map;
 
 public class SelectService extends OpenPage {
 
+    public void fillPaymentData(String phoneNumber, String sum, String email) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+
+        WebElement phoneField = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("connection-phone")));
+        phoneField.clear();
+        phoneField.sendKeys(phoneNumber);
+
+        WebElement sumField = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("connection-sum")));
+        sumField.clear();
+        sumField.sendKeys(sum);
+
+        WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("connection-email")));
+        emailField.clear();
+        emailField.sendKeys(email);
+    }
+
     @FindBy(xpath = "//*[@id='pay-section']/div/div/div[2]/section/div/div[1]/div[1]/div[2]/button")
     private WebElement serviceSelectButton;
 
@@ -23,6 +42,10 @@ public class SelectService extends OpenPage {
 
     public SelectService(WebDriver driver) {
         super(driver);
+        if (driver == null) {
+            throw new IllegalArgumentException("WebDriver не может быть null");
+        }
+
         serviceFieldPrefixes.put("Услуги связи", "connection");
         serviceFieldPrefixes.put("Домашний интернет", "internet");
         serviceFieldPrefixes.put("Рассрочка", "instalment");
@@ -103,6 +126,7 @@ public class SelectService extends OpenPage {
         }
 
     }
+
 
 }
 

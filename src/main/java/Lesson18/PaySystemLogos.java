@@ -1,7 +1,4 @@
-package org.example.Lesson16;
-
-import java.util.Arrays;
-import java.util.List;
+package Lesson18;
 
 public enum PaySystemLogos {
     VISA("Visa", "//*[@id='pay-section']//ul/li[1]/img"),

@@ -1,8 +1,6 @@
-package org.example.Lesson16;
+package Lesson18;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -14,6 +12,9 @@ public class OpenPage {
     protected WebDriverWait wait;
 
     public OpenPage(WebDriver driver) {
+        if (driver == null) {
+            throw new IllegalArgumentException("WebDriver cannot be null");
+        }
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         PageFactory.initElements(driver, this);
@@ -28,7 +29,7 @@ public class OpenPage {
             acceptButton.click();
             wait.until(ExpectedConditions.invisibilityOf(cookieBanner));
         } catch (Exception e) {
-            System.out.println("Cookie banner не найден или не может быть закрыт");
+            System.out.println("Cookie banner not found or already closed: " + e.getMessage());
         }
     }
 }
